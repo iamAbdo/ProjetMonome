@@ -45,7 +45,7 @@ ON DUPLICATE KEY UPDATE name = VALUES(name);
 
 INSERT INTO products (category_id, name, price, image, description) VALUES
 ((SELECT id FROM categories WHERE name='Categorie 1'), 'Produit 1', 4500, 'https://placehold.co/600x400?text=Produit+1', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.'),
-((SELECT id FROM categories WHERE name='Categorie 1'), 'Produit 2', 3200, 'https://placehold.co/600x400?text=Produit+2', 'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'),
+((SELECT id FROM categories WHERE name='Categorie 1'), 'Produit 2', 3200, 'https://placehold.co/600x400?text=Produit+2', 'Lorem Ipsum has been the industrys standard dummy text ever since the 1500s'),
 ((SELECT id FROM categories WHERE name='Categorie 2'), 'Produit 3', 6200, 'https://placehold.co/600x400?text=Produit+3', 'when an unknown printer took a galley of type and scrambled it to make a type specimen book.'),
 ((SELECT id FROM categories WHERE name='Categorie 3'), 'Produit 4', 2500, 'https://placehold.co/600x400?text=Produit+4', 'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.')
 ON DUPLICATE KEY UPDATE price = VALUES(price);
