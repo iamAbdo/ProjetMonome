@@ -9,6 +9,7 @@ $message = '';
 $isError = false;
 $currentAdminId = (int)($_SESSION['admin_id'] ?? 0);
 
+// formailre m3amar (ajouter ou supprimer)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $intent = $_POST['intent'] ?? '';
 
@@ -75,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $res = $connection->query('SELECT id, email, created_at FROM admins ORDER BY created_at DESC');
 $admins = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
+// ida kayn minimun ktr mn 1
 $hasMultipleAdmins = count($admins) > 1;
 ?>
 
@@ -124,6 +126,7 @@ $hasMultipleAdmins = count($admins) > 1;
                         </td>
                         <td><?= sanitize(date('d/m/Y', strtotime($admin['created_at']))); ?></td>
                         <td style="text-align: right;">
+                            <!-- lazm admin 1 minimum -->
                             <?php if (!$isCurrent && $hasMultipleAdmins): ?>
                                 <form method="post" onsubmit="return confirm('Retirer cet administrateur ?');" style="display: inline;">
                                     <input type="hidden" name="intent" value="delete">

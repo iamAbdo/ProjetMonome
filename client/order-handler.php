@@ -50,10 +50,6 @@ $connection->begin_transaction();
 try {
     $orderStmt = $connection->prepare('INSERT INTO orders (client_name, client_phone, client_address, client_email, product_id, qty) VALUES (?, ?, ?, ?, ?, ?)');
 
-    if (!$orderStmt) {
-        throw new RuntimeException('Préparation de la commande échouée : ' . $connection->error);
-    }
-
     $orderStmt->bind_param('ssssii', $clientName, $clientPhone, $clientAddress, $clientEmail, $productId, $qty);
 
     if (!$orderStmt->execute()) {
