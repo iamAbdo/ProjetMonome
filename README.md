@@ -24,7 +24,40 @@ supprimer require_admin(); dans ligne 4 dans admin/includes/header.php
 
 ### Structure
 
-Too be added 
+```
+├─ README.md
+├─ admin
+   ├─ admins.php
+   ├─ categories.php
+   ├─ includes
+   │  ├─ bootstrap.php
+   │  ├─ footer.php
+   │  └─ header.php
+   ├─ index.php
+   ├─ login.php
+   ├─ logout.php
+   ├─ orders.php
+   └─ products.php
+├─ apropos.html
+├─ client
+   ├─ apropos.html
+   ├─ includes
+   │  ├─ footer.php
+   │  └─ header.php
+   ├─ index.php
+   ├─ order-handler.php
+   └─ products.php
+├─ index.php
+├─ private
+   ├─ config.php
+   └─ database.sql
+├─ produits.php
+└─ public
+   ├─ css
+      └─ style.css
+   └─ js
+      └─ app.js
+```
 
 Les fichiers racine (`index.php`, `produits.php`, `apropos.html`) redirigent automatiquement vers le portail client. Ajustez/étendez selon vos besoins.
 
