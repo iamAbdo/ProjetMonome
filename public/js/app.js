@@ -1,27 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const chips = document.querySelectorAll('[data-filter]');
-  const productCards = document.querySelectorAll('[data-category]');
   const modal = document.querySelector('#order-modal');
   const closeBtn = document.querySelector('#modal-close');
   const form = document.querySelector('#order-form');
   const triggerButtons = document.querySelectorAll('[data-order]');
   const statusBox = document.querySelector('#order-status');
 
-  chips.forEach((chip) => {
-    chip.addEventListener('click', () => {
-      chips.forEach((el) => el.classList.remove('active'));
-      chip.classList.add('active');
-      const filter = chip.dataset.filter;
-
-      productCards.forEach((card) => {
-        if (filter === 'all' || card.dataset.category === filter) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
 
   if (modal) {
     triggerButtons.forEach((btn) => {

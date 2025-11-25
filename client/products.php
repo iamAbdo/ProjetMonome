@@ -3,10 +3,21 @@ declare(strict_types=1);
 $pageTitle = 'Template — Catalogue';
 require __DIR__ . '/includes/header.php';
 
+// jib les categories
 $res = $connection->query("SELECT id, name, LOWER(REPLACE(name, ' ', '-')) AS slug FROM categories ORDER BY name ASC");
 $categories = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
 
-$pRes = $connection->query("SELECT p.*, c.name AS category_name, LOWER(REPLACE(IFNULL(c.name, 'collection'), ' ', '-')) AS category_slug FROM products p LEFT JOIN categories c ON c.id = p.category_id ORDER BY p.created_at DESC");
+// filtre par catégorie (depuis ?category=ID)
+$selectedCategory = null;
+if (!empty($_GET['category']) && is_numeric($_GET['category'])) {
+    $selectedCategory = (int) $_GET['category'];
+}
+
+if ($selectedCategory) {
+    $pRes = $connection->query("SELECT p.*, c.name AS category_name, LOWER(REPLACE(IFNULL(c.name, 'collection'), ' ', '-')) AS category_slug FROM products p LEFT JOIN categories c ON c.id = p.category_id WHERE p.category_id = " . $selectedCategory . " ORDER BY p.created_at DESC");
+} else {
+    $pRes = $connection->query("SELECT p.*, c.name AS category_name, LOWER(REPLACE(IFNULL(c.name, 'collection'), ' ', '-')) AS category_slug FROM products p LEFT JOIN categories c ON c.id = p.category_id ORDER BY p.created_at DESC");
+}
 $products = $pRes ? $pRes->fetch_all(MYSQLI_ASSOC) : [];
 ?>
 
@@ -14,18 +25,25 @@ $products = $pRes ? $pRes->fetch_all(MYSQLI_ASSOC) : [];
     <div class="section-title">
         <div>
             <p style="color: var(--muted); text-transform: uppercase; letter-spacing: 0.2em; margin: 0;">Catalogue</p>
-            <h2>Nos pièces signatures</h2>
+            <h2>Nos produits</h2>
         </div>
-        <p style="max-width: 360px; color: var(--muted);">Cliquez sur « Commander » pour pré-réserver l’article. Aucun paiement en ligne, nous vous rappelons pour finaliser.</p>
+        <p style="max-width: 360px; color: var(--muted);">Cliquez sur « Commander » sur l’article. Aucun paiement en ligne, nous vous rappelons pour finaliser.</p>
     </div>
 
     <div class="section-title" style="margin-top: 0;">
         <div class="chip-group">
-            <span class="chip active" data-filter="all">Tous</span>
-            <?php foreach ($categories as $cat): ?>
-                <span class="chip" data-filter="<?= sanitize($cat['slug']); ?>"><?= sanitize($cat['name']); ?></span>
+            <?php
+            // 'Tous' ki categorie ma slectioner
+            $allActive = $selectedCategory ? '' : 'active';
+            ?>
+            <a class="chip <?= $allActive; ?>" href="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>">Tous</a>
+            <?php foreach ($categories as $cat): 
+                $isActive = ($selectedCategory && (int)$cat['id'] === $selectedCategory) ? 'active' : ''; ?>
+                <a class="chip <?= $isActive; ?>" href="?category=<?= (int)$cat['id']; ?>"><?= sanitize($cat['name']); ?></a>
             <?php endforeach; ?>
         </div>
+        <!-- ab3t categorie id b GET (donc b lien) -->
+        <input type="hidden" id="category" value="<?= (int)($selectedCategory ?? 0); ?>" aria-hidden="true">
     </div>
 
     <section class="grid">
@@ -37,16 +55,16 @@ $products = $pRes ? $pRes->fetch_all(MYSQLI_ASSOC) : [];
             </div>
         <?php else: ?>
             <?php foreach ($products as $product): ?>
-                <article class="card" data-category="<?= sanitize($product['category_slug']); ?>">
+                <article class="card">
                     <?php if (!empty($product['image'])): ?>
                         <img src="<?= sanitize($product['image']); ?>" alt="<?= sanitize($product['name']); ?>">
                     <?php endif; ?>
                     <div class="card-body">
                         <p style="color: var(--muted); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.2em;">
-                            <?= sanitize($product['category_name'] ?? 'Collection Template'); ?>
+                            <?= sanitize($product['category_name'] ?? ''); ?>
                         </p>
                         <h3><?= sanitize($product['name']); ?></h3>
-                        <p style="color: var(--muted);"><?= sanitize($product['description'] ?? 'Pièce iconique imaginée pour une expérience sensuelle et durable.'); ?></p>
+                        <p style="color: var(--muted);"><?= sanitize($product['description'] ?? ''); ?></p>
                         <div class="price"><?= number_format((float)$product['price'], 0, ',', ' '); ?> DA</div>
                         <button class="btn btn-primary" data-order data-id="<?= (int)$product['id']; ?>" data-name="<?= sanitize($product['name']); ?>">
                             Commander

@@ -3,8 +3,10 @@ declare(strict_types=1);
 $pageTitle = 'Lorem Ipsum — Accueil';
 require __DIR__ . '/includes/header.php';
 
+// jib 6 categorie bl asm
 $cRes = $connection->query('SELECT id, name FROM categories ORDER BY name ASC LIMIT 6');
 $categories = $cRes ? $cRes->fetch_all(MYSQLI_ASSOC) : [];
+// jib 3 produit bl date creation
 $nRes = $connection->query('SELECT p.*, c.name AS category_name FROM products p LEFT JOIN categories c ON c.id = p.category_id ORDER BY p.created_at DESC LIMIT 3');
 $nouveautes = $nRes ? $nRes->fetch_all(MYSQLI_ASSOC) : [];
 ?>

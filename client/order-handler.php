@@ -4,6 +4,7 @@ require __DIR__ . '/../private/config.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
+// ida mab3tch b post exit
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(['message' => 'Méthode non autorisée.']);
