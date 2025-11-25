@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS monome_shop;
 CREATE DATABASE IF NOT EXISTS monome_shop CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE monome_shop;
 

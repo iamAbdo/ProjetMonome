@@ -23,7 +23,7 @@ $pageTitle = $pageTitle ?? 'site (exemple)';
                 <a href="products.php">Produits</a>
                 <a href="apropos.html">À propos</a>
             </div>
-            <a class="btn btn-primary" href="../admin/login.php">Admin (exemple)</a>
+            <a class="btn btn-primary" href="../admin/login.php">Admin</a>
         </nav>
     </header>
 
